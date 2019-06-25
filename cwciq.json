@@ -1,0 +1,981 @@
+{
+	"id": "1ff90c30-3156-4d22-be70-0e86463909a3",
+	"name": "Juvo-Iq-cwc (dev)",
+	"description": "",
+	"auth": null,
+	"events": null,
+	"variables": [],
+	"order": [
+		"16318e02-bee7-4327-beee-8fc6a43a4d5a",
+		"d739d1ae-3e88-443f-9093-02e295bb5452",
+		"5aea7fe4-3910-4ae1-beaa-24c4ff337b52",
+		"e2405afe-e2fe-48d4-b274-ffadd7ab680e",
+		"c68fb773-87ce-447b-a295-833ff80584db",
+		"f223da13-1e09-457c-88a6-5c23395c88d3",
+		"47cd198e-76d0-4c14-bb6c-5ba927201afe",
+		"e29620d2-6007-45f8-8832-29ed4491a298",
+		"d0ab7e81-4b43-4f28-bcfd-dee8a5e7f329",
+		"0254d320-8b0f-430d-8d15-73ee2cb92d53",
+		"e4f68570-b9a1-43db-ac04-ae8f88cbf777",
+		"b3481c70-ff13-4050-80b2-3e0c3c8fdffc",
+		"4d8e44ab-3a44-428f-a041-c376fbdc1efa",
+		"acd203c6-99d3-45cc-b364-d6f361aca289"
+	],
+	"folders_order": [],
+	"folders": [],
+	"requests": [
+		{
+			"id": "0254d320-8b0f-430d-8d15-73ee2cb92d53",
+			"name": "Get the Audience by ID",
+			"url": "{{hostname2}}/v1/iq/audiences/{{Audience_id}}",
+			"description": null,
+			"data": null,
+			"dataMode": null,
+			"headerData": [
+				{
+					"description": null,
+					"enabled": true,
+					"key": "ApplicationId",
+					"type": "text",
+					"value": "juvo.cwc.policy.us"
+				},
+				{
+					"description": null,
+					"enabled": true,
+					"key": "Authorization",
+					"type": "text",
+					"value": "{{access_token}}"
+				},
+				{
+					"description": null,
+					"enabled": true,
+					"key": "Content-Type",
+					"type": "text",
+					"value": "application/json"
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4bd7d767-15c6-4d3a-a19f-cce27da5ea35",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"console.log(pm.environment.get(\"Policy_Name\"));",
+							"",
+							" var jsonData = pm.response.json();",
+							"pm.test(\"Name of Policy is displaying as expected\", function () {",
+							"   pm.expect(jsonData.policy_name).to.eql(pm.environment.get(\"Policy_Name\"));",
+							"});",
+							"pm.test(\"Policy Version is Displaying as Expected \", function () {",
+							"    pm.expect(jsonData.rules_version).to.eql(pm.environment.get(\"Policy_Version\"));",
+							"});",
+							"pm.test(\"Policy Creation Date is Displaying as Expected \", function () {",
+							"    pm.expect(jsonData.policy_updated_at).to.eql(pm.environment.get(\"Policy_Creation_Date\"));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"folder": null,
+			"headers": "ApplicationId: juvo.cwc.policy.us\nAuthorization: {{access_token}}\nContent-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "16318e02-bee7-4327-beee-8fc6a43a4d5a",
+			"name": "Get the Access Token from Authentication call",
+			"url": "{{hostname}}/v1/iq/auth/tokens",
+			"description": null,
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "ApplicationId",
+					"value": "juvo.cwc.policy.us",
+					"description": null,
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": {
+				"type": "basic",
+				"basic": [
+					{
+						"key": "username",
+						"value": "UuXtEsRRXVH8VZEvzVHXbtnn",
+						"type": "string"
+					},
+					{
+						"key": "password",
+						"value": "XTRXVeuWW4cQUFnrfYEbwvnA",
+						"type": "string"
+					},
+					{
+						"key": "saveHelperData",
+						"value": true,
+						"type": "boolean"
+					},
+					{
+						"key": "showPassword",
+						"value": false,
+						"type": "boolean"
+					}
+				]
+			},
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2963635f-dfee-4c7a-a59d-b269690ab887",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"postman.setEnvironmentVariable(\"access_token\", jsonData.token);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "07b65f33-edca-4a21-a4d2-41dcface1d9c",
+						"exec": [
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"folder": null,
+			"rawModeData": "",
+			"headers": "ApplicationId: juvo.cwc.policy.us\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "47cd198e-76d0-4c14-bb6c-5ba927201afe",
+			"name": "Get User Profile by MSISDN",
+			"url": "{{hostname}}/v1/iq/profiles",
+			"description": null,
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"description": null,
+					"enabled": true,
+					"key": "ApplicationId",
+					"value": "juvo.cwc.policy.us"
+				},
+				{
+					"description": null,
+					"enabled": true,
+					"key": "Content-Type",
+					"value": "application/json"
+				},
+				{
+					"description": null,
+					"enabled": true,
+					"key": "Authorization",
+					"value": "{{access_token}}"
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0aaad87b-100c-483d-b9ce-f8754c10f9a3",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Verify the Properties in Meta-data Object in Response Body\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"age_days\");",
+							"      pm.expect(pm.response.text()).to.include(\"areacode\");",
+							"        pm.expect(pm.response.text()).to.include(\"country_code\");",
+							"          pm.expect(pm.response.text()).to.include(\"creation_date\");",
+							"          ",
+							"  pm.expect(pm.response.text()).to.include(\"current_state\");",
+							"    pm.expect(pm.response.text()).to.include(\"juvo_activity_status\");",
+							"      pm.expect(pm.response.text()).to.include(\"juvo_creation_date\");",
+							"        pm.expect(pm.response.text()).to.include(\"max_level_index\");",
+							"          pm.expect(pm.response.text()).to.include(\"subscr_no\");",
+							"});",
+							"pm.test(\"Rechrages Section is Displaying in Response Body\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"recharge\");",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"folder": null,
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"rawModeData": "{\n\t\"msisdn\": \"93228914195\"\n}",
+			"headers": "ApplicationId: juvo.cwc.policy.us\nContent-Type: application/json\nAuthorization: {{access_token}}\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "4d8e44ab-3a44-428f-a041-c376fbdc1efa",
+			"name": "policy (payjoy)",
+			"url": "{{hostname2}}/v1/iq/policies/{{Policy_Name}}",
+			"description": null,
+			"data": null,
+			"dataMode": null,
+			"headerData": [
+				{
+					"description": null,
+					"enabled": true,
+					"key": "ApplicationId",
+					"type": "text",
+					"value": "payjoy.mtn.policy.ci"
+				},
+				{
+					"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+					"description": null,
+					"enabled": true,
+					"key": "Authorization",
+					"type": "text",
+					"value": "{{payjoy_access_token}}"
+				},
+				{
+					"description": null,
+					"enabled": true,
+					"key": "Content-Type",
+					"type": "text",
+					"value": "application/json"
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4bd7d767-15c6-4d3a-a19f-cce27da5ea35",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"console.log(pm.environment.get(\"Policy_Name\"));",
+							"",
+							" var jsonData = pm.response.json();",
+							"pm.test(\"Name of Policy is displaying as expected\", function () {",
+							"   pm.expect(jsonData.policy_name).to.eql(pm.environment.get(\"Policy_Name\"));",
+							"});",
+							"pm.test(\"Policy Version is Displaying as Expected \", function () {",
+							"    pm.expect(jsonData.rules_version).to.eql(pm.environment.get(\"Policy_Version\"));",
+							"});",
+							"pm.test(\"Policy Creation Date is Displaying as Expected \", function () {",
+							"    pm.expect(jsonData.policy_updated_at).to.eql(pm.environment.get(\"Policy_Creation_Date\"));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"folder": null,
+			"headers": "ApplicationId: payjoy.mtn.policy.ci\nAuthorization: {{payjoy_access_token}}\nContent-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "5aea7fe4-3910-4ae1-beaa-24c4ff337b52",
+			"name": "Create a Policy",
+			"url": "{{hostname}}/v1/iq/policies",
+			"description": null,
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "ApplicationId",
+					"value": "juvo.cwc.policy.us",
+					"description": null,
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": null,
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "Authorization",
+					"value": "{{access_token}}",
+					"description": null,
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4d852571-2a90-449b-8d8d-eded1ed23301",
+						"exec": [
+							"",
+							"if(pm.response.code==422)",
+							"{",
+							" pm.test(\"Same policy having same set of rules defined alreday exists\");   ",
+							"}",
+							"else if(pm.response.code==201){",
+							"pm.test(\"Successful POST request,Policy has been successfully created\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+							"});",
+							" pm.test(\"Status code name has OK String \", function () {",
+							"    pm.response.to.have.status(\"Created\");",
+							" });",
+							" pm.test(\"Poilicy Name is Present is the Response\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"policy_name\");",
+							" });",
+							"     pm.test(\"Poilicy Rule Version is Present is the Response\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"rules_version\");",
+							" });",
+							"  pm.test(\"Poilicy Creation Date is the Response in the Response\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"rules_version\");",
+							" });",
+							"}",
+							"var jsonData = JSON.parse(responseBody);",
+							"var reqBody = JSON.parse(request.data);",
+							"reqBody.name;",
+							"console.log(reqBody.name);",
+							"pm.environment.set(\"Policy_Name\", reqBody.name);",
+							"pm.environment.set(\"Policy_Version\", jsonData.rules_version);",
+							"pm.environment.set(\"Policy_Creation_Date\", jsonData.policy_created_at);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"folder": null,
+			"rawModeData": "{\n\t\n    \"name\": \"policy_1\",\n    \"type\": \"audience\",\n    \"properties\": {\n        \"score_min\": 0,\n        \"score_max\": 100,\n        \"decision_tiers\": {\n            \"accept\": [\n                40,\n                100\n            ],\n            \"reject\": [\n                0,\n                20\n            ],\n            \"review\": [\n                20,\n                40\n            ]\n        }\n    },\n    \"rules\": [\n        {\n            \"dependency_scope\": null,\n            \"generate_reason_code\": true,\n            \"invert_evaluation\": false,\n            \"properties\": {\n                \"attribute_namespaces\": [\n                    \"recharges\",\n                    \"recharges\",\n                    \"metadata\"\n                ],\n                \"attributes\": [\n                    \"recharge_amount_past_90_days\",\n                    \"recharge_amount_past_30_days\",\n                    \"age_days\"\n                ],\n                \"conditions\": [\n                    \">=\",\n                    \">=\",\n                    \">=\"\n                ],\n                \"rule_condition\": \"AND\",\n                \"values\": [\n                    4000,\n                    1500,\n                    180\n                ]\n            },\n            \"rule_id\": 1,\n            \"rule_name\": \"max_monthly_payment_1500\",\n            \"rule_type\": \"Multiple_numeric_attribute\",\n            \"weight\": 1500\n        },\n        {\n            \"generate_reason_code\": false,\n            \"invert_evaluation\": true,\n            \"properties\": {\n                \"dependencies\": [\n                    \"max_monthly_payment_1500\"\n                ],\n                \"dependency_conditions\": [\n                    true\n                ],\n                \"rule_condition\": \"AND\"\n            },\n            \"rule_id\": 3,\n            \"rule_name\": \"IF_NOT_max_monthly_payment_1500\",\n            \"rule_type\": \"IF\"\n        },\n        {\n            \"dependency_scope\": \"IF_NOT_max_monthly_payment_1500\",\n            \"generate_reason_code\": true,\n            \"invert_evaluation\": false,\n            \"properties\": {\n                \"attribute_namespaces\": [\n                    \"recharges\",\n                    \"recharges\",\n                    \"metadata\"\n                ],\n                \"attributes\": [\n                    \"recharge_amount_past_90_days\",\n                    \"recharge_amount_past_30_days\",\n                    \"age_days\"\n                ],\n                \"conditions\": [\n                    \">=\",\n                    \">=\",\n                    \">=\"\n                ],\n                \"rule_condition\": \"AND\",\n                \"values\": [\n                    2000,\n                    500,\n                    180\n                ]\n            },\n            \"rule_id\": 2,\n            \"rule_name\": \"max_monthly_payment_750\",\n            \"rule_type\": \"Multiple_numeric_attribute\",\n            \"weight\": 750\n        }\n    ]\n}",
+			"headers": "ApplicationId: juvo.cwc.policy.us\nContent-Type: application/json\nAuthorization: {{access_token}}\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "acd203c6-99d3-45cc-b364-d6f361aca289",
+			"name": "profile (payjoy)",
+			"url": "{{hostname2}}/v1/iq/profiles/93228914195",
+			"description": null,
+			"data": null,
+			"dataMode": null,
+			"headerData": [
+				{
+					"enabled": true,
+					"key": "ApplicationId",
+					"value": "payjoy.mtn.policy.ci"
+				},
+				{
+					"enabled": true,
+					"key": "Content-Type",
+					"value": "application/json"
+				},
+				{
+					"enabled": true,
+					"key": "Authorization",
+					"value": "{{payjoy_access_token}}"
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0aaad87b-100c-483d-b9ce-f8754c10f9a3",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Verify the Properties in Meta-data Object in Response Body\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"age_days\");",
+							"      pm.expect(pm.response.text()).to.include(\"areacode\");",
+							"        pm.expect(pm.response.text()).to.include(\"country_code\");",
+							"          pm.expect(pm.response.text()).to.include(\"creation_date\");",
+							"          ",
+							"  pm.expect(pm.response.text()).to.include(\"current_state\");",
+							"    pm.expect(pm.response.text()).to.include(\"juvo_activity_status\");",
+							"      pm.expect(pm.response.text()).to.include(\"juvo_creation_date\");",
+							"        pm.expect(pm.response.text()).to.include(\"max_level_index\");",
+							"          pm.expect(pm.response.text()).to.include(\"subscr_no\");",
+							"});",
+							"pm.test(\"Rechrages Section is Displaying in Response Body\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"recharge\");",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"folder": null,
+			"headers": "ApplicationId: payjoy.mtn.policy.ci\nContent-Type: application/json\nAuthorization: {{payjoy_access_token}}\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "b3481c70-ff13-4050-80b2-3e0c3c8fdffc",
+			"name": "token (payjoy)",
+			"url": "{{hostname2}}/v1/iq/auth/tokens",
+			"description": null,
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"description": null,
+					"enabled": true,
+					"key": "ApplicationId",
+					"type": "text",
+					"value": "payjoy.mtn.policy.ci"
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": {
+				"type": "basic",
+				"basic": [
+					{
+						"key": "password",
+						"value": "8fCMrZmhcVnwNMszYJdhBbkpfoyfrYWL",
+						"type": "string"
+					},
+					{
+						"key": "username",
+						"value": "AWnuoieGfBBbuHDHQE9UXwQmxmJZDruc",
+						"type": "string"
+					},
+					{
+						"key": "saveHelperData",
+						"value": true,
+						"type": "boolean"
+					},
+					{
+						"key": "showPassword",
+						"value": false,
+						"type": "boolean"
+					}
+				]
+			},
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2963635f-dfee-4c7a-a59d-b269690ab887",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"postman.setEnvironmentVariable(\"payjoy_access_token\", jsonData.token);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "07b65f33-edca-4a21-a4d2-41dcface1d9c",
+						"exec": [
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"folder": null,
+			"rawModeData": "",
+			"headers": "ApplicationId: payjoy.mtn.policy.ci\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "c68fb773-87ce-447b-a295-833ff80584db",
+			"name": "Update the Policy by ID",
+			"url": "{{hostname}}/v1/iq/policies/{{Policy_id}}",
+			"description": null,
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"description": null,
+					"enabled": true,
+					"key": "ApplicationId",
+					"type": "text",
+					"value": "juvo.cwc.policy.us"
+				},
+				{
+					"description": null,
+					"enabled": true,
+					"key": "Authorization",
+					"type": "text",
+					"value": "{{access_token}}"
+				},
+				{
+					"description": null,
+					"enabled": true,
+					"key": "Content-Type",
+					"type": "text",
+					"value": "application/json"
+				}
+			],
+			"method": "PUT",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4bd7d767-15c6-4d3a-a19f-cce27da5ea35",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"console.log(pm.environment.get(\"Policy_Name\"));",
+							"",
+							" var jsonData = pm.response.json();",
+							"pm.test(\"Name of Policy is displaying as expected\", function () {",
+							"   pm.expect(jsonData.policy_name).to.eql(pm.environment.get(\"Policy_Name\"));",
+							"});",
+							"pm.test(\"Policy Version is Displaying as Expected \", function () {",
+							"    pm.expect(jsonData.rules_version).to.eql(pm.environment.get(\"Policy_Version\"));",
+							"});",
+							"pm.test(\"Policy Creation Date is Displaying as Expected \", function () {",
+							"    pm.expect(jsonData.policy_updated_at).to.eql(pm.environment.get(\"Policy_Creation_Date\"));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"folder": null,
+			"rawModeData": "{\n\t\n    \"name\": \"policy_1\",\n    \"type\": \"audience\",\n    \"properties\":{\n        \"score_min\": 0,\n        \"score_max\": 100,\n        \"decision_tiers\": {\n            \"accept\": [\n                40,\n                100\n            ],\n            \"reject\": [\n                0,\n                20\n            ],\n            \"review\": [\n                20,\n                40\n            ]\n        }\n    },\n    \"rules\": [\n        {\n            \"dependency_scope\": null,\n            \"generate_reason_code\": true,\n            \"invert_evaluation\": false,\n            \"properties\": {\n                \"attribute_namespaces\": [\n                    \"recharges\",\n                    \"recharges\",\n                    \"metadata\"\n                ],\n                \"attributes\": [\n                    \"recharge_amount_past_90_days\",\n                    \"recharge_amount_past_30_days\",\n                    \"age_days\"\n                ],\n                \"conditions\": [\n                    \">=\",\n                    \">=\",\n                    \">=\"\n                ],\n                \"rule_condition\": \"AND\",\n                \"values\": [\n                    4000,\n                    1500,\n                    180\n                ]\n            },\n            \"rule_id\": 1,\n            \"rule_name\": \"max_monthly_payment_1500\",\n            \"rule_type\": \"Multiple_numeric_attribute\",\n            \"weight\": 1500\n        },\n        {\n            \"generate_reason_code\": false,\n            \"invert_evaluation\": true,\n            \"properties\": {\n                \"dependencies\": [\n                    \"max_monthly_payment_1500\"\n                ],\n                \"dependency_conditions\": [\n                    true\n                ],\n                \"rule_condition\": \"AND\"\n            },\n            \"rule_id\": 3,\n            \"rule_name\": \"IF_NOT_max_monthly_payment_1500\",\n            \"rule_type\": \"IF\"\n        },\n        {\n            \"dependency_scope\": \"IF_NOT_max_monthly_payment_1500\",\n            \"generate_reason_code\": true,\n            \"invert_evaluation\": false,\n            \"properties\": {\n                \"attribute_namespaces\": [\n                    \"recharges\",\n                    \"recharges\",\n                    \"metadata\"\n                ],\n                \"attributes\": [\n                    \"recharge_amount_past_90_days\",\n                    \"recharge_amount_past_30_days\",\n                    \"age_days\"\n                ],\n                \"conditions\": [\n                    \">=\",\n                    \">=\",\n                    \">=\"\n                ],\n                \"rule_condition\": \"AND\",\n                \"values\": [\n                    2000,\n                    500,\n                    180\n                ]\n            },\n            \"rule_id\": 2,\n            \"rule_name\": \"max_monthly_payment_750\",\n            \"rule_type\": \"Multiple_numeric_attribute\",\n            \"weight\": 750\n        }\n    ]\n}",
+			"headers": "ApplicationId: juvo.cwc.policy.us\nAuthorization: {{access_token}}\nContent-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "d0ab7e81-4b43-4f28-bcfd-dee8a5e7f329",
+			"name": "Create Audience",
+			"url": "{{hostname}}/v1/iq/audiences",
+			"description": null,
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"description": null,
+					"enabled": true,
+					"key": "ApplicationId",
+					"value": "juvo.cwc.policy.us"
+				},
+				{
+					"description": null,
+					"enabled": true,
+					"key": "Content-Type",
+					"value": "application/json"
+				},
+				{
+					"description": null,
+					"enabled": true,
+					"key": "Authorization",
+					"value": "{{access_token}}"
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0aaad87b-100c-483d-b9ce-f8754c10f9a3",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Verify the Properties in Meta-data Object in Response Body\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"age_days\");",
+							"      pm.expect(pm.response.text()).to.include(\"areacode\");",
+							"        pm.expect(pm.response.text()).to.include(\"country_code\");",
+							"          pm.expect(pm.response.text()).to.include(\"creation_date\");",
+							"          ",
+							"  pm.expect(pm.response.text()).to.include(\"current_state\");",
+							"    pm.expect(pm.response.text()).to.include(\"juvo_activity_status\");",
+							"      pm.expect(pm.response.text()).to.include(\"juvo_creation_date\");",
+							"        pm.expect(pm.response.text()).to.include(\"max_level_index\");",
+							"          pm.expect(pm.response.text()).to.include(\"subscr_no\");",
+							"});",
+							"pm.test(\"Rechrages Section is Displaying in Response Body\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"recharge\");",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"folder": null,
+			"rawModeData": "{\n  \"name\" : \"audience_1\",\n  \"policy_id\" : 76\n}",
+			"headers": "ApplicationId: juvo.cwc.policy.us\nContent-Type: application/json\nAuthorization: {{access_token}}\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "d739d1ae-3e88-443f-9093-02e295bb5452",
+			"name": "All Policies (index)",
+			"url": "{{hostname}}/v1/iq/policies",
+			"description": null,
+			"data": null,
+			"dataMode": null,
+			"headerData": [
+				{
+					"description": null,
+					"enabled": true,
+					"key": "ApplicationId",
+					"type": "text",
+					"value": "juvo.cwc.policy.us"
+				},
+				{
+					"description": null,
+					"enabled": true,
+					"key": "Authorization",
+					"type": "text",
+					"value": "{{access_token}}"
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4bd7d767-15c6-4d3a-a19f-cce27da5ea35",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"console.log(pm.environment.get(\"Policy_Name\"));",
+							"",
+							" var jsonData = pm.response.json();",
+							"pm.test(\"Name of Policy is displaying as expected\", function () {",
+							"   pm.expect(jsonData.policy_name).to.eql(pm.environment.get(\"Policy_Name\"));",
+							"});",
+							"pm.test(\"Policy Version is Displaying as Expected \", function () {",
+							"    pm.expect(jsonData.rules_version).to.eql(pm.environment.get(\"Policy_Version\"));",
+							"});",
+							"pm.test(\"Policy Creation Date is Displaying as Expected \", function () {",
+							"    pm.expect(jsonData.policy_updated_at).to.eql(pm.environment.get(\"Policy_Creation_Date\"));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"folder": null,
+			"headers": "ApplicationId: juvo.cwc.policy.us\nAuthorization: {{access_token}}\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "e2405afe-e2fe-48d4-b274-ffadd7ab680e",
+			"name": "Get the Policy by ID",
+			"url": "{{hostname}}/v1/iq/policies/{{Policy_id}}",
+			"description": null,
+			"data": null,
+			"dataMode": null,
+			"headerData": [
+				{
+					"description": null,
+					"enabled": true,
+					"key": "ApplicationId",
+					"type": "text",
+					"value": "juvo.cwc.policy.us"
+				},
+				{
+					"description": null,
+					"enabled": true,
+					"key": "Authorization",
+					"type": "text",
+					"value": "{{access_token}}"
+				},
+				{
+					"description": null,
+					"enabled": true,
+					"key": "Content-Type",
+					"type": "text",
+					"value": "application/json"
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4bd7d767-15c6-4d3a-a19f-cce27da5ea35",
+						"exec": [
+							"pm.test(\"Status code is 200\", function() {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"console.log(pm.environment.get(\"Policy_Name\"));",
+							"var jsonData = pm.response.json();",
+							"// Setting up Policy Name variable in Environments      ",
+							"postman.setEnvironmentVariable(\"Policy_Name\", jsonData.policy_name);",
+							" // Validating Policy Name in the JSON   ",
+							"pm.test(\"Name of Policy is displaying as expected\", function() {",
+							"    pm.expect(jsonData.policy_name).to.eql(pm.environment.get(\"Policy_Name\"));",
+							"});",
+							"",
+							"",
+							"",
+							"postman.setEnvironmentVariable(\"Policy_id\", jsonData.policy_id);",
+							"console.log(pm.environment.get(\"Policy_id\"));",
+							"",
+							"pm.test(\"Policy ID is Displaying as Expected\", function() {",
+							"    pm.expect(jsonData.policy_id).to.equal(pm.environment.get(\"Policy_id\"));",
+							"",
+							"});",
+							"",
+							"pm.test(\"Policy Creation Date is Displaying as Expected \", function() {",
+							"    pm.expect(jsonData.policy_updated_at).to.eql(pm.environment.get(\"Policy_Creation_Date\"));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"folder": null,
+			"headers": "ApplicationId: juvo.cwc.policy.us\nAuthorization: {{access_token}}\nContent-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "e29620d2-6007-45f8-8832-29ed4491a298",
+			"name": "All Audiences (index)",
+			"url": "{{hostname}}/v1/iq/audiences",
+			"description": null,
+			"data": null,
+			"dataMode": null,
+			"headerData": [
+				{
+					"description": null,
+					"enabled": true,
+					"key": "ApplicationId",
+					"type": "text",
+					"value": "juvo.cwc.policy.us"
+				},
+				{
+					"description": null,
+					"enabled": true,
+					"key": "Authorization",
+					"type": "text",
+					"value": "{{access_token}}"
+				}
+			],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4bd7d767-15c6-4d3a-a19f-cce27da5ea35",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"console.log(pm.environment.get(\"Policy_Name\"));",
+							"",
+							" var jsonData = pm.response.json();",
+							"pm.test(\"Name of Policy is displaying as expected\", function () {",
+							"   pm.expect(jsonData.policy_name).to.eql(pm.environment.get(\"Policy_Name\"));",
+							"});",
+							"pm.test(\"Policy Version is Displaying as Expected \", function () {",
+							"    pm.expect(jsonData.rules_version).to.eql(pm.environment.get(\"Policy_Version\"));",
+							"});",
+							"pm.test(\"Policy Creation Date is Displaying as Expected \", function () {",
+							"    pm.expect(jsonData.policy_updated_at).to.eql(pm.environment.get(\"Policy_Creation_Date\"));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"folder": null,
+			"headers": "ApplicationId: juvo.cwc.policy.us\nAuthorization: {{access_token}}\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "e4f68570-b9a1-43db-ac04-ae8f88cbf777",
+			"name": "Update the Audience by ID",
+			"url": "{{hostname}}/v1/iq/audiences/{{Audience_id}}",
+			"description": null,
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"description": null,
+					"enabled": true,
+					"key": "ApplicationId",
+					"type": "text",
+					"value": "juvo.cwc.policy.us"
+				},
+				{
+					"description": null,
+					"enabled": true,
+					"key": "Authorization",
+					"type": "text",
+					"value": "{{access_token}}"
+				},
+				{
+					"description": null,
+					"enabled": true,
+					"key": "Content-Type",
+					"type": "text",
+					"value": "application/json"
+				}
+			],
+			"method": "PUT",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4bd7d767-15c6-4d3a-a19f-cce27da5ea35",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"console.log(pm.environment.get(\"Policy_Name\"));",
+							"",
+							" var jsonData = pm.response.json();",
+							"pm.test(\"Name of Policy is displaying as expected\", function () {",
+							"   pm.expect(jsonData.policy_name).to.eql(pm.environment.get(\"Policy_Name\"));",
+							"});",
+							"pm.test(\"Policy Version is Displaying as Expected \", function () {",
+							"    pm.expect(jsonData.rules_version).to.eql(pm.environment.get(\"Policy_Version\"));",
+							"});",
+							"pm.test(\"Policy Creation Date is Displaying as Expected \", function () {",
+							"    pm.expect(jsonData.policy_updated_at).to.eql(pm.environment.get(\"Policy_Creation_Date\"));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"folder": null,
+			"rawModeData": "{\n  \"name\" : \"audience_1\"\n}",
+			"headers": "ApplicationId: juvo.cwc.policy.us\nAuthorization: {{access_token}}\nContent-Type: application/json\n",
+			"pathVariables": {}
+		},
+		{
+			"id": "f223da13-1e09-457c-88a6-5c23395c88d3",
+			"name": "Get a Policy Decision for a MSISDN",
+			"url": "{{hostname}}/v1/iq/policies/{{Policy_id}}/decisions",
+			"description": null,
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [
+				{
+					"key": "ApplicationId",
+					"value": "juvo.cwc.policy.us",
+					"description": null,
+					"enabled": true
+				},
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": null,
+					"enabled": true
+				},
+				{
+					"key": "Authorization",
+					"value": "{{access_token}}",
+					"description": null,
+					"enabled": true
+				}
+			],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": {
+				"type": "noauth"
+			},
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0d845401-d018-4102-9141-9bdd86e4a4e3",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Verify the Properties in Meta data in Policy Decision API Response Body\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"decision\");",
+							"        pm.expect(pm.response.text()).to.include(\"number_of_rules_evaluated\");",
+							"          pm.expect(pm.response.text()).to.include(\"policy_name\");",
+							"            pm.expect(pm.response.text()).to.include(\"policy_execution_terminated\");",
+							"              pm.expect(pm.response.text()).to.include(\"request_timestamp\");",
+							"                pm.expect(pm.response.text()).to.include(\"score\");",
+							"});",
+							"",
+							"    var jsonData = pm.response.json();",
+							"pm.test(\"Verify the User is evaluated for Correct Policy\", function () {",
+							"pm.expect(jsonData.policy_name).to.eql(pm.environment.get(\"Policy_Name\"));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"folder": null,
+			"rawModeData": "{\n  \"msisdn\" : \"93228914195\"\n}",
+			"headers": "ApplicationId: juvo.cwc.policy.us\nContent-Type: application/json\nAuthorization: {{access_token}}\n",
+			"pathVariables": {}
+		}
+	]
+}
